@@ -1,6 +1,7 @@
-# GDDrive
-Cloud Storage Implemented in Geometry Dash
-
+# GDDriveWS
+Cloud Storage Implemented in Geometry Dash with a webserver panel inspired by cgit.
 Video: https://youtu.be/oENqzFJ3TgI
 
-As of right now, only relative paths are supported, so you will have to put the file in the same path as the script. (i will add absolute paths later)
+## TODOS:
+As of right now, only relative paths are supported, so you will have to put the file in the same path as the script. (Will be added later)\
+Add more features to the web panel.

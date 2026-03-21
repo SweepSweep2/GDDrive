@@ -1,0 +1,1292 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>GDDrive</title>
+    <style>
+      :root {
+        --bg: #f8f8f8;
+        --surface: #ffffff;
+        --border: #cccccc;
+        --border-dark: #999999;
+        --accent: #336699;
+        --accent-hover: #224466;
+        --danger: #993333;
+        --success: #336633;
+        --muted: #888888;
+        --text: #000000;
+        --subtext: #444444;
+        --header-bg: #d0d0e8;
+        --header-fg: #000000;
+        --row-alt: #f0f0f8;
+        --link: #336699;
+        --tag-bg: #e8e8f8;
+        --form-label-bg: #e8e8f4;
+        --th-bg: #e8e8f4;
+        --navbar-bg: #e0e0ee;
+        --drop-bg: #fafafe;
+        --drop-hover-bg: #f0f0ff;
+        --info-bg: #fffbe8;
+        --info-border: #cccc99;
+        --info-color: #555500;
+        --log-bg: #f8f8f8;
+        --toast-bg: #ffffff;
+        --input-bg: #ffffff;
+        --input-focus-bg: #f8f8ff;
+        --btn-bg: #e8e8e8;
+        --btn-hover-bg: #d8d8e8;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #1a1a1a;
+          --surface: #222222;
+          --border: #3a3a3a;
+          --border-dark: #555555;
+          --accent: #7aaddd;
+          --accent-hover: #99ccff;
+          --danger: #cc6666;
+          --success: #66aa66;
+          --muted: #777777;
+          --text: #dddddd;
+          --subtext: #aaaaaa;
+          --header-bg: #2a2a3e;
+          --header-fg: #cccccc;
+          --row-alt: #252530;
+          --link: #7aaddd;
+          --tag-bg: #2a2a3e;
+          --form-label-bg: #252535;
+          --th-bg: #252535;
+          --navbar-bg: #242433;
+          --drop-bg: #1e1e2a;
+          --drop-hover-bg: #222235;
+          --info-bg: #2a2810;
+          --info-border: #555533;
+          --info-color: #bbbb77;
+          --log-bg: #1a1a1a;
+          --toast-bg: #222222;
+          --input-bg: #1a1a1a;
+          --input-focus-bg: #1e1e2a;
+          --btn-bg: #2e2e2e;
+          --btn-hover-bg: #333344;
+        }
+      }
+
+      html[data-theme="light"] {
+        --bg: #f8f8f8;
+        --surface: #ffffff;
+        --border: #cccccc;
+        --border-dark: #999999;
+        --accent: #336699;
+        --accent-hover: #224466;
+        --danger: #993333;
+        --success: #336633;
+        --muted: #888888;
+        --text: #000000;
+        --subtext: #444444;
+        --header-bg: #d0d0e8;
+        --header-fg: #000000;
+        --row-alt: #f0f0f8;
+        --link: #336699;
+        --tag-bg: #e8e8f8;
+        --form-label-bg: #e8e8f4;
+        --th-bg: #e8e8f4;
+        --navbar-bg: #e0e0ee;
+        --drop-bg: #fafafe;
+        --drop-hover-bg: #f0f0ff;
+        --info-bg: #fffbe8;
+        --info-border: #cccc99;
+        --info-color: #555500;
+        --log-bg: #f8f8f8;
+        --toast-bg: #ffffff;
+        --input-bg: #ffffff;
+        --input-focus-bg: #f8f8ff;
+        --btn-bg: #e8e8e8;
+        --btn-hover-bg: #d8d8e8;
+      }
+
+      html[data-theme="dark"] {
+        --bg: #1a1a1a;
+        --surface: #222222;
+        --border: #3a3a3a;
+        --border-dark: #555555;
+        --accent: #7aaddd;
+        --accent-hover: #99ccff;
+        --danger: #cc6666;
+        --success: #66aa66;
+        --muted: #777777;
+        --text: #dddddd;
+        --subtext: #aaaaaa;
+        --header-bg: #2a2a3e;
+        --header-fg: #cccccc;
+        --row-alt: #252530;
+        --link: #7aaddd;
+        --tag-bg: #2a2a3e;
+        --form-label-bg: #252535;
+        --th-bg: #252535;
+        --navbar-bg: #242433;
+        --drop-bg: #1e1e2a;
+        --drop-hover-bg: #222235;
+        --info-bg: #2a2810;
+        --info-border: #555533;
+        --info-color: #bbbb77;
+        --log-bg: #1a1a1a;
+        --toast-bg: #222222;
+        --input-bg: #1a1a1a;
+        --input-focus-bg: #1e1e2a;
+        --btn-bg: #2e2e2e;
+        --btn-hover-bg: #333344;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html,
+      body {
+        height: 100%;
+        background: var(--bg);
+        color: var(--text);
+        font-family: monospace;
+        font-size: 13px;
+        line-height: 1.5;
+      }
+
+      a {
+        color: var(--link);
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+
+      /* layout */
+      #app {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* nav top bar */
+      #cgit-topbar {
+        background: var(--header-bg);
+        border-bottom: 1px solid var(--border-dark);
+        padding: 4px 8px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+      }
+
+      .cgit-logo {
+        font-family: monospace;
+        font-size: 14px;
+        font-weight: bold;
+        color: var(--header-fg);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .cgit-logo-sep {
+        color: var(--muted);
+        font-weight: normal;
+      }
+      .cgit-logo-path {
+        color: var(--accent);
+        font-weight: normal;
+      }
+
+      #user-status {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 12px;
+        color: var(--subtext);
+      }
+      #user-badge {
+        color: var(--accent);
+        display: none;
+      }
+
+      /* second nav */
+      #cgit-navbar {
+        background: var(--navbar-bg);
+        border-bottom: 1px solid var(--border);
+        padding: 3px 8px;
+        font-size: 12px;
+        color: var(--subtext);
+        display: flex;
+        align-items: center;
+        gap: 2px;
+      }
+      .nav-tab {
+        padding: 2px 8px;
+        color: var(--link);
+        cursor: pointer;
+        border: 1px solid transparent;
+        background: none;
+        font-family: monospace;
+        font-size: 12px;
+      }
+      .nav-tab:hover {
+        border-color: var(--border-dark);
+        background: var(--drop-hover-bg);
+      }
+      .nav-divider {
+        color: var(--border-dark);
+        margin: 0 2px;
+        user-select: none;
+      }
+
+      /* content */
+      main {
+        flex: 1;
+        padding: 0;
+        max-width: 900px;
+        width: 100%;
+        margin: 0;
+      }
+
+      /* section headers */
+      .cgit-section {
+        margin-bottom: 0;
+      }
+
+      .cgit-table-title {
+        background: var(--header-bg);
+        border: 1px solid var(--border-dark);
+        border-bottom: none;
+        padding: 3px 6px;
+        font-weight: bold;
+        font-size: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        color: var(--header-fg);
+        margin-top: 16px;
+      }
+      .cgit-table-title:first-child {
+        margin-top: 0;
+      }
+      .cgit-table-title .title-actions {
+        font-weight: normal;
+        font-size: 11px;
+      }
+
+      table.cgit-table {
+        width: 100%;
+        border-collapse: collapse;
+        border: 1px solid var(--border-dark);
+        border-top: none;
+        margin-bottom: 0;
+        background: var(--surface);
+        table-layout: auto;
+      }
+
+      table.cgit-table th {
+        background: var(--th-bg);
+        border-bottom: 1px solid var(--border-dark);
+        border-right: 1px solid var(--border);
+        padding: 3px 6px;
+        text-align: left;
+        font-weight: bold;
+        font-size: 12px;
+        color: var(--subtext);
+      }
+      table.cgit-table th:last-child {
+        border-right: none;
+      }
+
+      table.cgit-table td {
+        padding: 3px 6px;
+        border-bottom: 1px solid var(--border);
+        border-right: 1px solid var(--border);
+        vertical-align: top;
+      }
+      table.cgit-table td:last-child {
+        border-right: none;
+      }
+
+      table.cgit-table tr:last-child td {
+        border-bottom: none;
+      }
+      table.cgit-table tr:nth-child(even) td {
+        background: var(--row-alt);
+      }
+
+      /* form fields */
+      .cgit-form-row {
+        display: flex;
+        border-bottom: 1px solid var(--border);
+      }
+      .cgit-form-row:last-of-type {
+        border-bottom: none;
+      }
+      .cgit-form-label {
+        width: 130px;
+        min-width: 130px;
+        padding: 5px 8px;
+        background: var(--form-label-bg);
+        border-right: 1px solid var(--border);
+        color: var(--subtext);
+        font-size: 12px;
+        font-weight: bold;
+      }
+      .cgit-form-value {
+        flex: 1;
+        padding: 4px 8px;
+        background: var(--surface);
+      }
+
+      input[type="text"],
+      input[type="password"] {
+        font-family: monospace;
+        font-size: 12px;
+        border: 1px solid var(--border-dark);
+        padding: 2px 5px;
+        background: var(--input-bg);
+        color: var(--text);
+        outline: none;
+        width: 240px;
+      }
+      input[type="text"]:focus,
+      input[type="password"]:focus {
+        border-color: var(--accent);
+        background: var(--input-focus-bg);
+      }
+
+      /* btns */
+      .btn {
+        font-family: monospace;
+        font-size: 12px;
+        padding: 2px 10px;
+        border: 1px solid var(--border-dark);
+        cursor: pointer;
+        background: var(--btn-bg);
+        color: var(--text);
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+      }
+      .btn:hover {
+        background: var(--btn-hover-bg);
+        border-color: var(--accent);
+        color: var(--accent);
+      }
+      .btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+      .btn-link {
+        background: none;
+        border: none;
+        color: var(--link);
+        padding: 0;
+        cursor: pointer;
+        font-family: monospace;
+        font-size: 12px;
+        display: inline;
+      }
+      .btn-link:hover {
+        text-decoration: underline;
+      }
+      .btn-danger-link {
+        background: none;
+        border: none;
+        color: var(--danger);
+        padding: 0;
+        cursor: pointer;
+        font-family: monospace;
+        font-size: 12px;
+        display: inline;
+      }
+      .btn-danger-link:hover {
+        text-decoration: underline;
+      }
+
+      /* upload zone */
+      #drop-zone {
+        border: 1px dashed var(--border-dark);
+        padding: 20px;
+        text-align: center;
+        background: var(--drop-bg);
+        cursor: pointer;
+        position: relative;
+        transition:
+          background 0.15s,
+          border-color 0.15s;
+        margin: 8px;
+      }
+      #drop-zone.drag-over {
+        border-color: var(--accent);
+        background: var(--drop-hover-bg);
+      }
+      #drop-zone input[type="file"] {
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+        cursor: pointer;
+        width: 100%;
+      }
+      .drop-label {
+        color: var(--subtext);
+        font-size: 12px;
+      }
+      #selected-file-name {
+        margin-top: 4px;
+        color: var(--accent);
+        font-size: 12px;
+        min-height: 16px;
+      }
+
+      /* progress bar */
+      .progress-wrap {
+        height: 4px;
+        background: var(--border);
+        margin: 4px 8px;
+        display: none;
+      }
+      .progress-wrap.visible {
+        display: block;
+      }
+      .progress-bar {
+        height: 100%;
+        background: var(--accent);
+        width: 0%;
+        transition: width 0.3s;
+      }
+
+      /* empty state
+       */
+      .empty-state td {
+        color: var(--muted);
+        font-style: italic;
+        text-align: center;
+        padding: 10px 6px;
+      }
+
+      /* status info bar */
+      .info-bar {
+        background: var(--info-bg);
+        border: 1px solid var(--info-border);
+        padding: 4px 8px;
+        font-size: 12px;
+        color: var(--info-color);
+        margin-top: 8px;
+      }
+
+      /* toast */
+      #toast-container {
+        position: fixed;
+        bottom: 16px;
+        right: 16px;
+        z-index: 10000;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        pointer-events: none;
+      }
+      .toast {
+        padding: 6px 12px;
+        font-family: monospace;
+        font-size: 12px;
+        border-left: 3px solid;
+        background: var(--toast-bg);
+        border: 1px solid var(--border-dark);
+        animation:
+          toastIn 0.2s ease,
+          toastOut 0.3s ease 2.7s forwards;
+        max-width: 320px;
+        pointer-events: all;
+      }
+      .toast.success {
+        border-left: 3px solid var(--success);
+        color: var(--success);
+      }
+      .toast.error {
+        border-left: 3px solid var(--danger);
+        color: var(--danger);
+      }
+      .toast.info {
+        border-left: 3px solid var(--accent);
+        color: var(--accent);
+      }
+
+      @keyframes toastIn {
+        from {
+          opacity: 0;
+          transform: translateX(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+      @keyframes toastOut {
+        from {
+          opacity: 1;
+        }
+        to {
+          opacity: 0;
+        }
+      }
+
+      /* spinner */
+      .spinner {
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        border: 2px solid var(--border);
+        border-top-color: var(--accent);
+        border-radius: 50%;
+        animation: rotate 0.7s linear infinite;
+      }
+      @keyframes rotate {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      /* log terminal thing */
+      #log-terminal {
+        background: var(--log-bg);
+        padding: 6px 8px;
+        font-family: monospace;
+        font-size: 11px;
+        max-height: 140px;
+        overflow-y: auto;
+        line-height: 1.7;
+        border: 1px solid var(--border-dark);
+        border-top: none;
+        color: var(--subtext);
+      }
+      .log-line .ts {
+        color: var(--muted);
+      }
+      .log-line.ok .msg {
+        color: var(--success);
+      }
+      .log-line.err .msg {
+        color: var(--danger);
+      }
+      .log-line.inf .msg {
+        color: var(--accent);
+      }
+
+      /* stats */
+      .stat-row td {
+        font-weight: bold;
+      }
+
+      /* footer */
+      footer {
+        border-top: 1px solid var(--border-dark);
+        padding: 4px 8px;
+        font-size: 11px;
+        color: var(--muted);
+        background: var(--header-bg);
+        display: flex;
+        justify-content: space-between;
+        margin-top: 24px;
+      }
+
+      #upload-status {
+        font-size: 11px;
+        color: var(--subtext);
+        padding: 0 8px;
+      }
+
+      @media (max-width: 600px) {
+        main {
+          padding: 0;
+        }
+        input[type="text"],
+        input[type="password"] {
+          width: 180px;
+        }
+        .cgit-form-label {
+          width: 100px;
+          min-width: 100px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <!-- top -->
+      <div id="cgit-topbar">
+        <div class="cgit-logo">
+          GDDrive
+          <span class="cgit-logo-sep">/</span>
+          <span class="cgit-logo-path">storage</span>
+          <span class="cgit-logo-sep">/</span>
+          <span class="cgit-logo-path" id="path-username">anonymous</span>
+        </div>
+        <div id="user-status">
+          <span id="user-badge"></span>
+          <button
+            class="btn"
+            id="logout-btn"
+            style="display: none"
+            onclick="logout()"
+          >
+            logout
+          </button>
+        </div>
+      </div>
+
+      <!-- nav -->
+      <div id="cgit-navbar">
+        <span style="color: var(--muted); font-size: 11px; margin-right: 4px"
+          >about</span
+        >
+        <span class="nav-divider">|</span>
+        <button class="nav-tab" onclick="scrollToSection('upload-section')">
+          upload
+        </button>
+        <span class="nav-divider">|</span>
+        <button class="nav-tab" onclick="scrollToSection('files-section')">
+          files
+        </button>
+        <span class="nav-divider">|</span>
+        <button class="nav-tab" onclick="scrollToSection('log-section')">
+          log
+        </button>
+        <span style="flex: 1"></span>
+        <button
+          class="nav-tab"
+          id="theme-toggle"
+          onclick="toggleTheme()"
+          title="Toggle light/dark mode"
+        >
+          ◐ theme
+        </button>
+        <span class="nav-divider">|</span>
+        <span style="color: var(--muted); font-size: 11px"
+          >generated by <strong>GDDrive</strong></span
+        >
+      </div>
+
+      <main>
+        <!-- login -->
+        <div id="login-panel">
+          <div class="cgit-table-title">Authentication required</div>
+          <table class="cgit-table">
+            <tbody>
+              <tr>
+                <td
+                  colspan="2"
+                  style="
+                    background: var(--info-bg);
+                    color: var(--subtext);
+                    font-size: 12px;
+                    border-bottom: 1px solid var(--border);
+                  "
+                >
+                  Enter your Geometry Dash credentials. Your password is hashed
+                  locally and never stored in plaintext.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div
+            class="cgit-form-row"
+            style="border: 1px solid var(--border-dark); border-top: none"
+          >
+            <div class="cgit-form-label">GD Username</div>
+            <div class="cgit-form-value">
+              <input
+                type="text"
+                id="inp-username"
+                placeholder="RobTop"
+                autocomplete="username"
+              />
+            </div>
+          </div>
+          <div
+            class="cgit-form-row"
+            style="border: 1px solid var(--border-dark); border-top: none"
+          >
+            <div class="cgit-form-label">Password</div>
+            <div class="cgit-form-value">
+              <input
+                type="password"
+                id="inp-password"
+                placeholder="••••••••"
+                autocomplete="current-password"
+              />
+            </div>
+          </div>
+          <div
+            class="cgit-form-row"
+            style="border: 1px solid var(--border-dark); border-top: none"
+          >
+            <div class="cgit-form-label">Account ID</div>
+            <div class="cgit-form-value">
+              <input
+                type="text"
+                id="inp-account-id"
+                placeholder="71"
+                autocomplete="off"
+              />
+            </div>
+          </div>
+          <div
+            style="
+              padding: 6px 8px;
+              background: var(--surface);
+              border: 1px solid var(--border-dark);
+              border-top: none;
+            "
+          >
+            <button class="btn" onclick="login()" id="login-btn">
+              <span
+                id="login-spinner"
+                style="display: none"
+                class="spinner"
+              ></span>
+              connect
+            </button>
+          </div>
+        </div>
+
+        <!-- logged in -->
+        <div id="main-view" style="display: none">
+          <!-- stats -->
+          <div class="cgit-table-title">storage overview</div>
+          <table class="cgit-table">
+            <thead>
+              <tr>
+                <th>files stored</th>
+                <th>backend</th>
+                <th>status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="stat-row">
+                <td id="stat-files">0</td>
+                <td id="stat-server">GD</td>
+                <td><span style="color: var(--success)">● connected</span></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- upload -->
+          <div
+            id="upload-section"
+            class="cgit-table-title"
+            style="margin-top: 16px"
+          >
+            upload file
+          </div>
+          <table class="cgit-table">
+            <tbody>
+              <tr>
+                <td>
+                  <div id="drop-zone">
+                    <input
+                      type="file"
+                      id="file-input"
+                      onchange="onFileSelected(this)"
+                    />
+                    <div class="drop-label">
+                      drop file here or click to browse — any file type, encoded
+                      into a GD level
+                    </div>
+                    <div id="selected-file-name"></div>
+                  </div>
+                  <div class="progress-wrap" id="upload-progress-wrap">
+                    <div class="progress-bar" id="upload-progress-bar"></div>
+                  </div>
+                  <div
+                    style="
+                      padding: 4px 8px;
+                      display: flex;
+                      gap: 10px;
+                      align-items: center;
+                    "
+                  >
+                    <button
+                      class="btn"
+                      id="upload-btn"
+                      onclick="uploadFile()"
+                      disabled
+                    >
+                      <span
+                        id="upload-spinner"
+                        style="display: none"
+                        class="spinner"
+                      ></span>
+                      upload to GD
+                    </button>
+                    <span id="upload-status"></span>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- file list -->
+          <div
+            id="files-section"
+            class="cgit-table-title"
+            style="margin-top: 16px"
+          >
+            stored files
+            <span class="title-actions">
+              <button
+                class="btn"
+                style="font-size: 11px; padding: 1px 8px"
+                onclick="loadFiles()"
+              >
+                ↺ refresh
+              </button>
+            </span>
+          </div>
+          <div id="file-list-area">
+            <table class="cgit-table">
+              <tbody>
+                <tr class="empty-state">
+                  <td>no files stored yet</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- log -->
+          <div
+            id="log-section"
+            class="cgit-table-title"
+            style="margin-top: 16px"
+          >
+            activity log
+          </div>
+          <div id="log-terminal"></div>
+        </div>
+        <!-- /main-view -->
+      </main>
+
+      <footer>
+        <span>GDDrive &mdash; Geometry Dash cloud storage</span>
+        <span id="footer-time"></span>
+      </footer>
+    </div>
+
+    <div id="toast-container"></div>
+
+    <script>
+      // footer clock
+      function updateClock() {
+        const el = document.getElementById("footer-time");
+        if (el) el.textContent = new Date().toUTCString();
+      }
+      updateClock();
+      setInterval(updateClock, 1000);
+
+      function scrollToSection(id) {
+        const el = document.getElementById(id);
+        if (el) el.scrollIntoView({ behavior: "smooth" });
+      }
+
+      // theme
+      function getSystemTheme() {
+        return window.matchMedia("(prefers-color-scheme: dark)").matches
+          ? "dark"
+          : "light";
+      }
+
+      function applyTheme(theme) {
+        document.documentElement.setAttribute("data-theme", theme);
+        localStorage.setItem("gddrive-theme", theme);
+        const btn = document.getElementById("theme-toggle");
+        if (btn) btn.textContent = theme === "dark" ? "◑ theme" : "◐ theme";
+      }
+
+      function toggleTheme() {
+        const current =
+          document.documentElement.getAttribute("data-theme") ||
+          getSystemTheme();
+        applyTheme(current === "dark" ? "light" : "dark");
+      }
+
+      // use save or sys
+      (function () {
+        const saved = localStorage.getItem("gddrive-theme");
+        applyTheme(saved || getSystemTheme());
+        // sys change
+        window
+          .matchMedia("(prefers-color-scheme: dark)")
+          .addEventListener("change", (e) => {
+            if (!localStorage.getItem("gddrive-theme")) {
+              applyTheme(e.matches ? "dark" : "light");
+            }
+          });
+      })();
+
+      // log terminal thing
+      function addLog(msg, type = "inf") {
+        const terminal = document.getElementById("log-terminal");
+        const now = new Date();
+        const ts = now.toTimeString().slice(0, 8);
+        const line = document.createElement("div");
+        line.className = `log-line ${type}`;
+        line.innerHTML = `<span class="ts">[${ts}]</span> <span class="msg">${msg}</span>`;
+        terminal.appendChild(line);
+        terminal.scrollTop = terminal.scrollHeight;
+      }
+
+      // toast
+      function toast(msg, type = "info") {
+        const c = document.getElementById("toast-container");
+        const el = document.createElement("div");
+        el.className = `toast ${type}`;
+        el.textContent = msg;
+        c.appendChild(el);
+        setTimeout(() => el.remove(), 3100);
+      }
+
+      // auth
+      async function checkStatus() {
+        try {
+          const r = await fetch("/api/status");
+          const data = await r.json();
+          if (data.logged_in) {
+            showMainView(data.username, data.account_id);
+            loadFiles();
+          }
+        } catch (e) {}
+      }
+
+      async function login() {
+        const username = document.getElementById("inp-username").value.trim();
+        const password = document.getElementById("inp-password").value.trim();
+        const account_id = document
+          .getElementById("inp-account-id")
+          .value.trim();
+
+        if (!username || !password || !account_id) {
+          toast("All fields are required.", "error");
+          return;
+        }
+
+        setLoading("login-btn", "login-spinner", true);
+
+        try {
+          const r = await fetch("/api/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ username, password, account_id }),
+          });
+          const data = await r.json();
+          if (data.ok) {
+            toast(`Welcome, ${data.username}!`, "success");
+            addLog(
+              `Authenticated as ${data.username} (ID: ${account_id})`,
+              "ok",
+            );
+            showMainView(data.username, account_id);
+            loadFiles();
+          } else {
+            toast(data.error || "Login failed.", "error");
+          }
+        } catch (e) {
+          toast("Server error during login.", "error");
+        }
+
+        setLoading("login-btn", "login-spinner", false);
+      }
+
+      async function logout() {
+        await fetch("/api/logout", { method: "POST" });
+        document.getElementById("main-view").style.display = "none";
+        document.getElementById("login-panel").style.display = "block";
+        document.getElementById("user-badge").style.display = "none";
+        document.getElementById("logout-btn").style.display = "none";
+        document.getElementById("path-username").textContent = "anonymous";
+        toast("Logged out.", "info");
+      }
+
+      function showMainView(username, accountId) {
+        document.getElementById("login-panel").style.display = "none";
+        document.getElementById("main-view").style.display = "block";
+        const badge = document.getElementById("user-badge");
+        badge.textContent = `${username} · #${accountId}`;
+        badge.style.display = "inline";
+        document.getElementById("logout-btn").style.display = "inline-flex";
+        document.getElementById("path-username").textContent = username;
+      }
+
+      // file list
+      async function loadFiles() {
+        try {
+          const r = await fetch("/api/files");
+          if (r.status === 401) return;
+          const data = await r.json();
+          renderFiles(data.files);
+          document.getElementById("stat-files").textContent = data.count;
+        } catch (e) {
+          addLog("Failed to load file list.", "err");
+        }
+      }
+
+      function renderFiles(files) {
+        const area = document.getElementById("file-list-area");
+        area.innerHTML = "";
+
+        const table = document.createElement("table");
+        table.className = "cgit-table";
+
+        const thead = document.createElement("thead");
+        thead.innerHTML =
+          "<tr><th>filename</th><th>level id</th><th>level name</th><th>actions</th></tr>";
+        table.appendChild(thead);
+
+        const tbody = document.createElement("tbody");
+
+        if (!files || files.length === 0) {
+          const tr = document.createElement("tr");
+          tr.className = "empty-state";
+          tr.innerHTML = "<td colspan='4'>no files stored yet</td>";
+          tbody.appendChild(tr);
+        } else {
+          for (const f of files) {
+            const tr = document.createElement("tr");
+
+            const tdName = document.createElement("td");
+            tdName.style.fontFamily = "monospace";
+            tdName.textContent = f.name;
+
+            const tdId = document.createElement("td");
+            tdId.style.color = "var(--accent)";
+            tdId.textContent = f.level_id;
+
+            const tdLvl = document.createElement("td");
+            tdLvl.style.color = "var(--muted)";
+            tdLvl.textContent = f.level_name;
+
+            const tdActions = document.createElement("td");
+            tdActions.style.whiteSpace = "nowrap";
+
+            const dlBtn = document.createElement("button");
+            dlBtn.className = "btn-link";
+            dlBtn.textContent = "download";
+            dlBtn.addEventListener("click", () => downloadFile(f.name));
+
+            const sep = document.createElement("span");
+            sep.textContent = " | ";
+            sep.style.color = "var(--muted)";
+
+            const delBtn = document.createElement("button");
+            delBtn.className = "btn-danger-link";
+            delBtn.textContent = "delete";
+            delBtn.addEventListener("click", () => deleteFile(f.name));
+
+            tdActions.appendChild(dlBtn);
+            tdActions.appendChild(sep);
+            tdActions.appendChild(delBtn);
+
+            tr.appendChild(tdName);
+            tr.appendChild(tdId);
+            tr.appendChild(tdLvl);
+            tr.appendChild(tdActions);
+            tbody.appendChild(tr);
+          }
+        }
+
+        table.appendChild(tbody);
+        area.appendChild(table);
+      }
+
+      // upload
+      let selectedFile = null;
+
+      function onFileSelected(input) {
+        selectedFile = input.files[0] || null;
+        document.getElementById("selected-file-name").textContent = selectedFile
+          ? `→ ${selectedFile.name}`
+          : "";
+        document.getElementById("upload-btn").disabled = !selectedFile;
+      }
+
+      const dz = document.getElementById("drop-zone");
+      dz.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        dz.classList.add("drag-over");
+      });
+      dz.addEventListener("dragleave", () => dz.classList.remove("drag-over"));
+      dz.addEventListener("drop", (e) => {
+        e.preventDefault();
+        dz.classList.remove("drag-over");
+        const file = e.dataTransfer.files[0];
+        if (file) {
+          selectedFile = file;
+          document.getElementById("selected-file-name").textContent =
+            `→ ${file.name}`;
+          document.getElementById("upload-btn").disabled = false;
+        }
+      });
+
+      async function uploadFile() {
+        if (!selectedFile) return;
+
+        setLoading("upload-btn", "upload-spinner", true);
+        setStatus("upload-status", "encoding & uploading…");
+        showProgress(true);
+        animateProgress();
+
+        addLog(
+          `Uploading "${selectedFile.name}" (${formatBytes(selectedFile.size)})…`,
+          "inf",
+        );
+
+        const formData = new FormData();
+        formData.append("file", selectedFile, selectedFile.name);
+
+        try {
+          const r = await fetch("/api/upload", {
+            method: "POST",
+            body: formData,
+          });
+          const data = await r.json();
+          showProgress(false);
+
+          if (data.ok) {
+            toast(`Uploaded! Level ID: ${data.level_id}`, "success");
+            addLog(`✓ "${data.filename}" → level ID ${data.level_id}`, "ok");
+            setStatus("upload-status", `done — level id: ${data.level_id}`);
+            selectedFile = null;
+            document.getElementById("selected-file-name").textContent = "";
+            document.getElementById("upload-btn").disabled = true;
+            document.getElementById("file-input").value = "";
+            loadFiles();
+          } else {
+            toast(data.error || "Upload failed.", "error");
+            addLog(`✗ Upload failed: ${data.error}`, "err");
+            setStatus("upload-status", "failed.");
+          }
+        } catch (e) {
+          showProgress(false);
+          toast("Network error during upload.", "error");
+          addLog("✗ Network error during upload.", "err");
+          setStatus("upload-status", "");
+        }
+
+        setLoading("upload-btn", "upload-spinner", false);
+      }
+
+      // dl
+      async function downloadFile(filename) {
+        addLog(`Downloading "${filename}"…`, "inf");
+        toast("Download started…", "info");
+
+        try {
+          const r = await fetch(
+            "/api/download?name=" + encodeURIComponent(filename),
+          );
+          if (!r.ok) {
+            const data = await r.json();
+            toast(data.error || "Download failed.", "error");
+            addLog(`✗ Download failed: ${data.error}`, "err");
+            return;
+          }
+          const blob = await r.blob();
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = filename;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+          addLog(
+            `✓ "${filename}" downloaded (${formatBytes(blob.size)})`,
+            "ok",
+          );
+          toast(`Downloaded "${filename}"`, "success");
+        } catch (e) {
+          toast("Network error during download.", "error");
+          addLog("✗ Network error during download.", "err");
+        }
+      }
+
+      // del
+      async function deleteFile(filename) {
+        if (!confirm(`Delete "${filename}" from GD? This cannot be undone.`))
+          return;
+
+        addLog(`Deleting "${filename}"…`, "inf");
+
+        try {
+          const r = await fetch("/api/delete", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name: filename }),
+          });
+          const data = await r.json();
+          if (data.ok) {
+            toast(`Deleted "${filename}"`, "success");
+            addLog(`✓ "${filename}" deleted`, "ok");
+            loadFiles();
+          } else {
+            toast(data.error || "Deletion failed.", "error");
+            addLog(`✗ Delete failed: ${data.error}`, "err");
+          }
+        } catch (e) {
+          toast("Network error during delete.", "error");
+          addLog("✗ Network error during delete.", "err");
+        }
+      }
+
+      // helpers
+      function setLoading(btnId, spinnerId, loading) {
+        document.getElementById(btnId).disabled = loading;
+        document.getElementById(spinnerId).style.display = loading
+          ? "inline-block"
+          : "none";
+      }
+
+      function setStatus(id, msg) {
+        document.getElementById(id).textContent = msg;
+      }
+
+      function showProgress(show) {
+        const wrap = document.getElementById("upload-progress-wrap");
+        const bar = document.getElementById("upload-progress-bar");
+        wrap.classList.toggle("visible", show);
+        if (!show) bar.style.width = "0%";
+      }
+
+      function animateProgress() {
+        const bar = document.getElementById("upload-progress-bar");
+        let pct = 0;
+        const interval = setInterval(() => {
+          pct = Math.min(pct + Math.random() * 12, 85);
+          bar.style.width = pct + "%";
+          if (pct >= 85) clearInterval(interval);
+        }, 300);
+      }
+
+      function formatBytes(bytes) {
+        if (bytes < 1024) return `${bytes} B`;
+        if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+        return `${(bytes / 1024 / 1024).toFixed(2)} MB`;
+      }
+
+      document.addEventListener("keydown", (e) => {
+        if (
+          e.key === "Enter" &&
+          document.getElementById("login-panel").style.display !== "none"
+        )
+          login();
+      });
+
+      checkStatus();
+      addLog("GDDrive web interface loaded.", "inf");
+    </script>
+  </body>
+</html>

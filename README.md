@@ -3,4 +3,7 @@ Cloud Storage Implemented in Geometry Dash
 
 Video: https://youtu.be/oENqzFJ3TgI
 
-As of right now, only relative paths are supported, so you will have to put the file in the same path as the script. (i will add absolute paths later)
+# Cool links
+
+gaxolotl's webserver panel: https://github.com/gaxolotl/GDDriveWS
+ArcticWoof's web implementation: https://github.com/DumbCaveSpider/GDDriveWeb

@@ -1,4 +1,4 @@
-import base64, gzip, requests, hashlib, base64, json, random, string, zlib, os
+import base64, gzip, requests, hashlib, base64, json, random, string, zlib, os, getpass
 from datetime import datetime
 
 def log(message, level, function=""):
@@ -215,7 +215,7 @@ with open("credentials.json", "r") as credentials_file:
     else:
         print("To begin, please log in to Geometry Dash.")
         username = input(" - Username: ")
-        password = input(" - Password: ")
+        password = getpass.getpass(" - Password: ")
         account_id = input(" - Account ID: ")
 
         log("Generating GJP2...", 0)

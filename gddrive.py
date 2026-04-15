@@ -214,9 +214,20 @@ with open("credentials.json", "r") as credentials_file:
         account_id = data["account_id"]
     else:
         print("To begin, please log in to Geometry Dash.")
+
         username = input(" - Username: ")
         password = getpass.getpass(" - Password: ")
-        account_id = input(" - Account ID: ")
+
+        log("Finding account ID...", 0)
+
+        user_search_data = {
+            "secret": "Wmfd2893gb7",
+            "str": username
+        }
+
+        user_search_req = requests.post(url="https://www.boomlings.com/database/getGJUsers20.php", data=user_search_data, headers=headers)
+
+        account_id = user_search_req.text.split(":")[3]
 
         log("Generating GJP2...", 0)
         gjp_2 = generate_gjp2(password)

@@ -227,7 +227,13 @@ with open("credentials.json", "r") as credentials_file:
 
         user_search_req = requests.post(url="https://www.boomlings.com/database/getGJUsers20.php", data=user_search_data, headers=headers)
 
-        account_id = user_search_req.text.split(":")[3]
+        parts = user_search_req.text.split(":")
+        user_data = {parts[i]: parts[i + 1] for i in range(0, len(parts) - 1, 2)}
+        account_id = user_data.get("16")
+
+        if not account_id:
+            log("Could not find account ID for user: " + username, 2)
+            exit()
 
         log("Generating GJP2...", 0)
         gjp_2 = generate_gjp2(password)
